@@ -20,7 +20,8 @@ def test_data():
     return os.path.join(os.path.dirname(__file__), 'test_data')
 
 
-@pytest.fixture(params=[0, 1, 2, 3, 4])
+@pytest.fixture(params=[0, 1, 2, 3, 4],
+                ids=['Abu Dhabi', 'Copenhagen', 'NYC Central Park 1', 'NYC Central Park 2', 'NYC JFK'])
 def weather_data(test_data, request):
     weather_folder = os.path.join(test_data, 'weather_data')
     files = os.listdir(weather_folder)
