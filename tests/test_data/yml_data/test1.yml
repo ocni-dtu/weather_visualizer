@@ -1,0 +1,8 @@
+figures:
+  wind_rose:
+    - yearly
+  utci:
+    - yearly
+
+epw: C:\Users\Christian\PycharmProjects\weather_visualizer\tests\test_data\weather_data\ARE_Abu.Dhabi.412170_IWEC.epw
+out: C:\Users\Christian\PycharmProjects\weather_visualizer\tests\test_data\report_data

@@ -17,6 +17,7 @@ from weather_visualizer import visualization
 # -------------------------------------------------------------------------------------------------------------------- #
 #
 
+
 class PDF(FPDF):
     def header(self):
         # Logo

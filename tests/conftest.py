@@ -26,3 +26,10 @@ def weather_data(test_data, request):
     weather_folder = os.path.join(test_data, 'weather_data')
     files = os.listdir(weather_folder)
     return os.path.join(weather_folder, files[request.param])
+
+
+@pytest.fixture(params=[0, 1, 2, 3, 4])
+def yml_data(test_data, request):
+    yml_folder = os.path.join(test_data, 'yml_data')
+    files = os.listdir(yml_folder)
+    return os.path.join(yml_folder, files[request.param])

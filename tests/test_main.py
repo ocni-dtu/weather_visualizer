@@ -8,7 +8,6 @@ __license__ = "GNU GPLv3"
 # Module imports
 import os
 import typing
-import click
 import yaml
 
 # Weather imports
@@ -18,15 +17,9 @@ from weather_visualizer import main
 #
 
 
-@click.command()
-@click.option('--config_file', help='Path to config.yml')
-def weather_visualizer_cli(config_file):
+def test_main(yml_data):
 
-    with open(config_file, 'r') as stream:
+    with open(yml_data, 'r') as stream:
         config = yaml.safe_load(stream)
 
     main.main(config)
-
-
-if __name__ == '__main__':
-    weather_visualizer_cli()

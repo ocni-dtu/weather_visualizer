@@ -33,15 +33,19 @@ def mm2inch(*tuple_):
     inch = 25.4
     if isinstance(tuple_[0], tuple):
         return tuple(i/inch for i in tuple_[0])
+    elif isinstance(tuple_[0], list):
+        return tuple(i/inch for i in tuple_[0])
     else:
         return tuple(i/inch for i in tuple_)
 
 
-def draw_wind_rose(weather_file: str, colors=cm.cool, size=(150, 150)) -> None:
+def draw_wind_rose(weather_file: str, colors='cool', size=(150, 150)) -> None:
 
     speed, direction = file_parser.get_wind(weather_file)
     fig = plt.figure(figsize=(mm2inch(size)))
     ax = fig.add_subplot(111, projection="windrose")
+
+    colors = plt.get_cmap(colors)
     ax.bar(direction, speed, normed=True, opening=1.0, cmap=colors)
     ax.set_legend()
 
@@ -132,3 +136,33 @@ def draw_typical_day(weather_file: str, quantity='temperature', colors=None) -> 
     plt.xlim(datetime.datetime(2018, 1, 1, 0), datetime.datetime(2018, 1, 2, 1))
     plt.gcf().autofmt_xdate()
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
+
+
+def save_figure(weather_file, out_path, quantity, time_period='yearly', size=None, colors=None,
+                xlim=None, ylim=None, file_format='png') -> None:
+
+    if quantity in ['temperature', 'relative_humidity', 'utci']:
+        if time_period == 'yearly':
+            if not size:
+                size = (150, 50)
+            draw_yearly_values(weather_file, quantity, colors, size)
+        else:
+            raise KeyError(f'{time_period} is an unknown time_period')
+
+    elif quantity == 'wind_rose':
+        if time_period == 'yearly':
+            if not colors:
+                colors = cm.cool
+            if not size:
+                size = (150, 150)
+            draw_wind_rose(weather_file, colors, size)
+        else:
+            raise KeyError(f'{time_period} is an unknown time_period')
+
+    else:
+        raise KeyError(f'{quantity} is an unknown quantity')
+
+    outfile = os.path.join(out_path, f'figure_{quantity}_{time_period}.{file_format}')
+    plt.savefig(outfile, bbox_inches='tight')
+
+    return None

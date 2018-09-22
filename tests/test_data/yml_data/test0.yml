@@ -1,0 +1,17 @@
+figures:
+  wind_rose:
+    yearly:
+      size:
+        - 150
+        - 150
+      colors: coolwarm
+      limits:
+        y:
+          - 0
+          - 15
+
+  utci:
+    - yearly
+
+epw: C:\Users\Christian\PycharmProjects\weather_visualizer\tests\test_data\weather_data\ARE_Abu.Dhabi.412170_IWEC.epw
+out: C:\Users\Christian\PycharmProjects\weather_visualizer\tests\test_data\report_data

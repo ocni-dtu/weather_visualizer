@@ -7,26 +7,18 @@ __license__ = "GNU GPLv3"
 
 # Module imports
 import os
-import typing
 import click
-import yaml
+from click.testing import CliRunner
 
-# Weather imports
-from weather_visualizer import main
+# Livestock imports
+from weather_visualizer import cli
 
 # -------------------------------------------------------------------------------------------------------------------- #
 #
 
 
-@click.command()
-@click.option('--config_file', help='Path to config.yml')
-def weather_visualizer_cli(config_file):
+def test_weather_visualizer_cli(yml_data):
+    runner = CliRunner()
+    result = runner.invoke(cli.weather_visualizer_cli, [yml_data])
 
-    with open(config_file, 'r') as stream:
-        config = yaml.safe_load(stream)
-
-    main.main(config)
-
-
-if __name__ == '__main__':
-    weather_visualizer_cli()
+    assert result.exit_code == 0
