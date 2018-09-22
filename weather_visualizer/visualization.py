@@ -29,15 +29,26 @@ def date_range(start, stop, step):
         start += step
 
 
-def draw_wind_rose(weather_file: str, colors=cm.cool) -> None:
+def mm2inch(*tuple_):
+    inch = 25.4
+    if isinstance(tuple_[0], tuple):
+        return tuple(i/inch for i in tuple_[0])
+    else:
+        return tuple(i/inch for i in tuple_)
+
+
+def draw_wind_rose(weather_file: str, colors=cm.cool, size=(150, 150)) -> None:
 
     speed, direction = file_parser.get_wind(weather_file)
-    ax = WindroseAxes.from_ax()
+    fig = plt.figure(figsize=(mm2inch(size)))
+    ax = fig.add_subplot(111, projection="windrose")
     ax.bar(direction, speed, normed=True, opening=1.0, cmap=colors)
     ax.set_legend()
 
+    return ax
 
-def draw_yearly_values(weather_file: str, quantity='temperature', colors=None) -> None:
+
+def draw_yearly_values(weather_file: str, quantity='temperature', colors=None, size=(150, 50)) -> None:
 
     if quantity == 'temperature':
         values = file_parser.get_temperature(weather_file)
@@ -66,12 +77,14 @@ def draw_yearly_values(weather_file: str, quantity='temperature', colors=None) -
                                   f'Only temperature, utci and relative humidity are')
 
     grid = np.reshape(values, (365, 24)).T
-    fig, ax = plt.subplots(1, 1)
+    fig, ax = plt.subplots(1, 1, figsize=(mm2inch(size)))
     plot = ax.pcolor(grid, cmap=colors)
     ax.set_xlabel('Day of the Year')
     ax.set_ylabel('Hour of the Day')
     bar = fig.colorbar(plot, ax=ax)
     bar.set_label(bar_label)
+
+    return fig
 
 
 def draw_typical_day(weather_file: str, quantity='temperature', colors=None) -> None:

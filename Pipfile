@@ -9,6 +9,7 @@ numpy = "*"
 pyepw = "*"
 pytest = "*"
 windrose = "*"
+fpdf = "*"
 
 [dev-packages]
 
