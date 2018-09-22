@@ -33,6 +33,6 @@ def test_draw_utci_yearly_values(weather_data):
 
 
 @pytest.mark.parametrize('quantity', ['temperature', 'relative_humidity', 'utci'])
-def test_draw_yearly_values(weather_data, quantity):
+def test_draw_typical_day(weather_data, quantity):
     visualization.draw_typical_day(weather_data, quantity)
     plt.show()
