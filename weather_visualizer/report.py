@@ -21,7 +21,8 @@ from weather_visualizer import visualization
 class PDF(FPDF):
     def header(self):
         # Logo
-        self.image(r'C:\Users\Christian\PycharmProjects\weather_visualizer\tests\test_data\report_data\livestock_cow.png', 10, 8, 33)
+        self.image(os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                                'tests/test_data/report_data/livestock_cow.png'), 10, 8, 33)
         # Arial bold 15
         self.set_font('Arial', 'B', 15)
         # Move to the right
@@ -45,11 +46,11 @@ def simple_report(weather_file: str, output: str):
 
     visualization.draw_wind_rose(weather_file, size=(110, 110))
     wind_path = os.path.join(output, 'wind.png')
-    plt.savefig(wind_path, bbox_inches='tight')
+    plt.savefig(wind_path, bbox_inches='tight', dpi=300)
 
     visualization.draw_yearly_values(weather_file, 'utci', size=(280, 90))
     utci_path = os.path.join(output, 'utci.png')
-    plt.savefig(utci_path, bbox_inches='tight')
+    plt.savefig(utci_path, bbox_inches='tight', dpi=300)
 
     pdf = PDF(orientation='L', format='A3')
     pdf.alias_nb_pages()
