@@ -10,6 +10,7 @@ import os
 import typing
 from fpdf import FPDF
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Weather imports
 from weather_visualizer import visualization
@@ -48,9 +49,14 @@ def simple_report(weather_file: str, output: str):
     wind_path = os.path.join(output, 'wind.png')
     plt.savefig(wind_path, bbox_inches='tight', dpi=300)
 
-    visualization.draw_yearly_values(weather_file, 'utci', size=(280, 90))
+    _, values = visualization.draw_yearly_values(weather_file, 'utci', size=(280, 90))
     utci_path = os.path.join(output, 'utci.png')
     plt.savefig(utci_path, bbox_inches='tight', dpi=300)
+    maximum = np.max(values)
+    q75 = np.quantile(values, 0.75)
+    mean = np.mean(values)
+    q25 = np.quantile(values, 0.25)
+    minimum = np.min(values)
 
     pdf = PDF(orientation='L', format='A3')
     pdf.alias_nb_pages()
@@ -58,4 +64,25 @@ def simple_report(weather_file: str, output: str):
     pdf.image(utci_path, x=12.7, y=54, w=280, h=90)
     pdf.image(wind_path, x=12.7, y=171, w=110, h=110)
     out_path = os.path.join(output, 'report.pdf')
+
+    pdf.set_y(50)
+    pdf.cell(290)
+    pdf.set_font('Arial', 'B', 15)
+    pdf.cell(w=30, h=10, txt=f'UTCI Stats:')
+    pdf.ln(15)
+    pdf.cell(290)
+    pdf.cell(w=30, h=10, txt=f'Max: {maximum:.2f}C')
+    pdf.ln(10)
+    pdf.cell(290)
+    pdf.cell(w=30, h=10, txt=f'Q75: {q75:.2f}C')
+    pdf.ln(10)
+    pdf.cell(290)
+    pdf.cell(w=30, h=10, txt=f'Mean: {mean:.2f}C')
+    pdf.ln(10)
+    pdf.cell(290)
+    pdf.cell(w=30, h=10, txt=f'Q25: {q25:.2f}C')
+    pdf.ln(10)
+    pdf.cell(290)
+    pdf.cell(w=30, h=10, txt=f'Min: {minimum:.2f}C')
+
     pdf.output(out_path, 'F')

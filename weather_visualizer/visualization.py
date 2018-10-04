@@ -52,7 +52,7 @@ def draw_wind_rose(weather_file: str, colors='cool', size=(150, 150)) -> None:
     return ax
 
 
-def draw_yearly_values(weather_file: str, quantity='temperature', colors=None, size=(150, 50)) -> None:
+def draw_yearly_values(weather_file: str, quantity='temperature', colors=None, size=(150, 50)) -> tuple:
 
     if quantity == 'temperature':
         values = file_parser.get_temperature(weather_file)
@@ -88,7 +88,7 @@ def draw_yearly_values(weather_file: str, quantity='temperature', colors=None, s
     bar = fig.colorbar(plot, ax=ax)
     bar.set_label(bar_label)
 
-    return fig
+    return fig, values
 
 
 def draw_typical_day(weather_file: str, quantity='temperature', colors=None) -> None:
